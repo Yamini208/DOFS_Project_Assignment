@@ -108,3 +108,10 @@ This connection allows AWS services (CodePipeline, CodeBuild) to securely access
 * Once authorized, you'll be redirected back to the AWS console. Finish creating the connection.
 
 * Note down the Connection ARN (e.g., arn:aws:codeconnections:us-east-1:YOUR_ACCOUNT_ID:connection/YOUR_CONNECTION_ID). You will need this for the CI/CD Terraform.
+
+**2.  Local Setup:**
+1. Clone the Repository:
+   ```
+   git clone YOUR_GITHUB_REPO_URL
+cd dofs-project
+```
