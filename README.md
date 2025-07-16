@@ -181,3 +181,24 @@ resource "aws_codepipeline" "dofs_pipeline" {
 }
 ```
 * Deploy CI/CD Infrastructure:
+
+From the ```dofs-project``` root directory:
+```
+cd terraform/cicd
+terraform init -backend-config="bucket=dofs-terraform-state-YOUR_ACCOUNT_ID" -backend-config="key=cicd/terraform.tfstate" -backend-config="region=us-east-1"
+terraform plan -out=cicd.tfplan
+terraform apply cicd.tfplan
+```
+This will create your CodePipeline, CodeBuild project, and associated IAM roles.
+
+**5.  Application Deployment (via CI/CD):**
+
+Once the CI/CD pipeline is deployed, it should automatically trigger. Any git push to your configured branch (e.g., ```main```) will initiate a new pipeline execution.
+* Initial Push: Make a small change to your ```README.md``` or a dummy file and push it to trigger the pipeline if it doesn't automatically start after creation.
+```
+echo "Initial commit to trigger pipeline" >> README.md
+git add README.md
+git commit -m "Trigger initial pipeline build"
+git push origin main
+```
+* Monitor the Pipeline: Go to the AWS CodePipeline console and monitor the execution. It will go through Source, Build, and potentially an Approval stage before deploying the application infrastructure to ```DEV```.
