@@ -1,0 +1,54 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - echo "===== INSTALL PHASE ====="
+      - echo "Upgrading pip..."
+      - pip install --upgrade pip
+
+      # Install Python dependencies for Lambda functions
+      - echo "Installing Python dependencies for all Lambda functions..."
+      - |
+        for dir in $(find lambdas -maxdepth 1 -mindepth 1 -type d); do
+          if [ -f "$dir/requirements.txt" ]; then
+            echo "Installing dependencies for $(basename $dir) from $dir/requirements.txt"
+            pip install -r "$dir/requirements.txt" || true
+          else
+            echo "No requirements.txt found in $dir, skipping."
+          fi
+        done
+
+      # Install Terraform locally
+      - echo "Downloading and installing Terraform..."
+      - TERRAFORM_VERSION="1.8.5"
+      - curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+      - unzip terraform.zip -d ./terraform-bin
+      - export PATH=$PATH:$(pwd)/terraform-bin
+      - terraform version
+
+  build:
+    commands:
+      - echo "===== BUILD PHASE ====="
+
+      # Run Terraform for CI/CD infrastructure
+      - echo "Running Terraform for CI/CD infrastructure..."
+      - cd terraform/cicd || { echo "terraform/cicd directory not found!"; exit 1; }
+      - terraform init -backend-config="bucket=dofs-terraform-state-bucket" -backend-config="key=cicd/terraform.tfstate" -backend-config="region=us-east-1"
+      - terraform plan -out=tfplan_cicd
+      - terraform apply -auto-approve tfplan_cicd
+
+      # Run Terraform for DOFS DEV
+      - echo "Running Terraform for DOFS DEV deployment..."
+      - cd ../.. # Back to project root
+      - cd terraform || { echo "terraform directory not found!"; exit 1; }
+      - terraform init -backend-config="bucket=dofs-terraform-state-bucket" -backend-config="key=dofs-dev/terraform.tfstate" -backend-config="region=us-east-1"
+      - terraform plan -out=tfplan_dofs_dev
+      - terraform apply -auto-approve tfplan_dofs_dev
+
+  post_build:
+    commands:
+      - echo "===== POST BUILD PHASE ====="
+      - echo "Build and deployment completed successfully!"
