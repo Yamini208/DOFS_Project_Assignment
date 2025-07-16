@@ -142,3 +142,42 @@ This step provisions your CodePipeline and CodeBuild project using Terraform.
 * Update Terraform Backend Configuration:
 
 Edit ```terraform/cicd/backend.tf``` and ```terraform/backend.tf``` to point to the S3 bucket you created earlier.
+```
+# terraform/cicd/backend.tf (and terraform/backend.tf)
+terraform {
+  backend "s3" {
+    bucket = "dofs-terraform-state-YOUR_ACCOUNT_ID" # REPLACE with your S3 bucket name
+    key    = "cicd/terraform.tfstate"                 # For cicd backend.tf
+    # key    = "dofs-dev/terraform.tfstate"             # For main terraform backend.tf
+    region = "us-east-1"
+    encrypt = true
+  }
+}
+```
+* Update CI/CD Terraform Variables:
+
+Edit ```terraform/cicd/main.tf``` (or ```variables.tf``` if defined there) to pass your CodeConnections ARN and repository details.
+```
+# Example snippet within terraform/cicd/main.tf (look for codepipeline resource)
+resource "aws_codepipeline" "dofs_pipeline" {
+  # ... other settings
+  stage {
+    name = "Source"
+    action {
+      name             = "Source"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
+      output_artifacts = ["SourceArtifact"]
+      configuration = {
+        ConnectionArn    = "arn:aws:codeconnections:us-east-1:YOUR_ACCOUNT_ID:connection/YOUR_CONNECTION_ID" # REPLACE
+        FullRepositoryId = "YOUR_GITHUB_USERNAME/dofs-project" # REPLACE
+        BranchName       = "main" # Or your primary branch
+      }
+    }
+  }
+  # ...
+}
+```
+* Deploy CI/CD Infrastructure:
