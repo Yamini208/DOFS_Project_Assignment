@@ -16,10 +16,18 @@ def lambda_handler(event, context):
             order = json.loads(record['body'])
             print(f"🛒 Order received: {order}")
 
-            # Simulate 70% success rate or force failure manually
+            # Debugging: check for force_fail in payload
+            if "force_fail" in order:
+                print(f"✅ force_fail detected: {order['force_fail']}")
+            else:
+                print("❌ force_fail not found in order payload")
+
+            # Simulate 70% success or force failure
             if order.get("force_fail") or random.random() >= 0.7:
                 print("❌ Simulated failure")
                 raise Exception("Simulated processing failure")
+            else:
+                print("✅ Fulfillment succeeded")
 
             # Fulfillment successful, update status
             order["status"] = "FULFILLED"
