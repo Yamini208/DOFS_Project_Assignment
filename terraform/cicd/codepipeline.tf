@@ -1,3 +1,16 @@
+resource "aws_s3_bucket" "artifact_store" {
+  bucket = "${var.project_name}-artifact-store"
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_versioning" "artifact_store" {
+  bucket = aws_s3_bucket.artifact_store.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_codepipeline" "terraform_pipeline" {
   name     = "terraform-pipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
