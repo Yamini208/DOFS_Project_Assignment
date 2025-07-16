@@ -16,4 +16,5 @@ Step Function Orchestrator
 Validate Lambda --> DynamoDB (orders) --> SQS --> Fulfillment Lambda
   |
   v
-DynamoDB update + DLQ```
+DynamoDB update + DLQ
+```
