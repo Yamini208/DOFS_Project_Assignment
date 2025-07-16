@@ -203,7 +203,7 @@ git push origin main
 ```
 * Monitor the Pipeline: Go to the AWS CodePipeline console and monitor the execution. It will go through Source, Build, and potentially an Approval stage before deploying the application infrastructure to ```DEV```.
 
-**5. Troubleshooting:**
+**6. Troubleshooting:**
 This section provides common issues and solutions.
 
 **+ Connection not found" in CodePipeline/CodeBuild Source:**
@@ -216,7 +216,7 @@ This section provides common issues and solutions.
 
 2. Solution: Ensure your ```buildspec.yml``` correctly navigates to the directory containing the ```requirements.txt``` before attempting to install. For multiple ```requirements.txt``` files, use the find and loop approach as described in the ```buildspec.yml``` template.
 
-+ **Terraform errors during ```terraform apply```:**
+**+ Terraform errors during ```terraform apply```:**
 1. Issue: IAM permissions, resource limits, syntax errors in .tf files, or conflicts with existing AWS resources.
 
 2. Solution: Carefully read the Terraform error message; it usually points to the exact problem.
@@ -229,7 +229,51 @@ This section provides common issues and solutions.
 
 * State Locking: Ensure your S3 backend configuration includes dynamodb_table for state locking to prevent concurrent apply issues.
 
-+ **Lambda function not found / CodeDeploy errors:**
+**+ Lambda function not found / CodeDeploy errors:**
 1. Issue: Often means the Lambda deployment package wasn't correctly created or uploaded by Terraform, or the Lambda resource in Terraform is misconfigured.
 
 2. Solution: Check CodeBuild logs for errors during the terraform apply phase. Ensure the Lambda zip files are correctly packaged and referenced in your Terraform aws_lambda_function resources.
+
+**7. Pipeline Explanation:**
+
+The CI/CD pipeline is defined using Terraform and orchestrated by AWS CodePipeline.
+
+* **Source Stage:**
+
+* Provider: GitHub (via AWS CodeConnections).
+
+* Trigger: Automatically starts a new pipeline execution on every git push to the main branch.
+
+* Action: Fetches the latest code from the GitHub repository and places it into an S3 artifact bucket.
+
+* **Build Stage (AWS CodeBuild):**
+
+* Environment: A managed CodeBuild environment (e.g., aws/codebuild/standard:6.0 or custom).
+
+* buildspec.yml: This file (located at the root of the repository) defines the build commands:
+
+* install phase:
+
+1. Installs Python dependencies for each Lambda function by iterating through their respective directories (lambdas/<function_name>/requirements.txt).
+
+2. Ensures pip is updated.
+
+3. (Potentially installs Terraform if not pre-installed in the CodeBuild image.)
+
+* build phase:
+
+1. Navigates to terraform/cicd to initialize and apply Terraform for the CI/CD resources (CodePipeline, CodeBuild project itself). This ensures the pipeline's infrastructure can be updated by the pipeline.
+
+2. Navigates to terraform/ (the root of the application's Terraform modules) to initialize and apply Terraform, deploying all DOFS application infrastructure (API Gateway, Lambdas, Step Functions, DynamoDB, SQS) to the DEV environment.
+
+* **Artifacts:**
+
+The build output (though not explicitly used by CodePipeline's subsequent stages in this Terraform-centric deployment) is stored.
+
+* **Deployment Model:**
+
+* This pipeline uses a GitOps/Infrastructure-as-Code (IaC) driven deployment model. Terraform apply commands are executed directly within the CodeBuild stage.
+
+* Any change to the .tf files in the terraform/ directory (or lambdas/ code which is packaged by Terraform) will trigger the pipeline, and Terraform will calculate and apply the necessary infrastructure updates.
+
+* This setup ensures that your infrastructure is always defined by your version-controlled Terraform code.
