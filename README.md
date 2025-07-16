@@ -75,7 +75,7 @@ Before you begin, ensure you have the following installed and configured:
 
 Follow these steps to set up and deploy the DOFS project.
 
-* AWS Setup: This section covers the initial manual setup required before your CI/CD pipeline can take over.
+1. AWS Setup: This section covers the initial manual setup required before your CI/CD pipeline can take over.
 
 * Create an S3 Bucket for Terraform State:
 This bucket will store your Terraform state files, enabling remote state management and state locking.
@@ -88,23 +88,23 @@ This bucket will store your Terraform state files, enabling remote state managem
 
 * Keep default settings, but consider enabling Versioning and Server-Side Encryption for best practices.
 
-Create the bucket.
+* Create the bucket.
 
-Create AWS CodeConnections to GitHub:
+2. Create AWS CodeConnections to GitHub:
 This connection allows AWS services (CodePipeline, CodeBuild) to securely access your GitHub repository.
 
-Go to the AWS CodeConnections console (https://console.aws.amazon.com/codesuite/settings/connections) in us-east-1.
+* Go to the AWS CodeConnections console (https://console.aws.amazon.com/codesuite/settings/connections) in us-east-1.
 
-Click "Create connection".
+* Click "Create connection".
 
-Select "GitHub" as the provider.
+* Select "GitHub" as the provider.
 
-Provide a descriptive name (e.g., dofs-github-connection).
+* Provide a descriptive name (e.g., dofs-github-connection).
 
-Click "Connect to GitHub". This will redirect you to GitHub to authorize the AWS Connector for GitHub app.
+* Click "Connect to GitHub". This will redirect you to GitHub to authorize the AWS Connector for GitHub app.
 
-Follow the GitHub prompts, ensuring you grant access to the repository containing this project.
+* Follow the GitHub prompts, ensuring you grant access to the repository containing this project.
 
-Once authorized, you'll be redirected back to the AWS console. Finish creating the connection.
+* Once authorized, you'll be redirected back to the AWS console. Finish creating the connection.
 
-Note down the Connection ARN (e.g., arn:aws:codeconnections:us-east-1:YOUR_ACCOUNT_ID:connection/YOUR_CONNECTION_ID). You will need this for the CI/CD Terraform.
+* Note down the Connection ARN (e.g., arn:aws:codeconnections:us-east-1:YOUR_ACCOUNT_ID:connection/YOUR_CONNECTION_ID). You will need this for the CI/CD Terraform.
