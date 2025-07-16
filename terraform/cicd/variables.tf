@@ -15,3 +15,16 @@ variable "project_name" {
   type        = string
   default     = "order-fulfillment"
 }
+
+variable "github_branch" {
+  description = "GitHub branch to build from"
+  type        = string
+  default     = "main"
+}
+
+variable "github_oauth_token" {
+  description = "OAuth token for GitHub access (for CodePipeline)"
+  type        = string
+  sensitive   = true
+  default     = "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"
+}
