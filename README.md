@@ -19,8 +19,9 @@ Validate Lambda --> DynamoDB (orders) --> SQS --> Fulfillment Lambda
 DynamoDB update + DLQ
 ```
 
-**3. Functional Components**
-API Handler (Lambda): A RESTful endpoint exposed via API Gateway that accepts POST /order requests. It initiates the Step Function execution for order processing.
+**3. Functional Components:**
+
+* API Handler (Lambda): A RESTful endpoint exposed via API Gateway that accepts POST /order requests. It initiates the Step Function execution for order processing.
 
 * Step Function (Orchestrator): A serverless workflow that orchestrates the order processing. It includes:
 
