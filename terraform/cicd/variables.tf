@@ -3,3 +3,9 @@ variable "github_repo" {
   type        = string
   default     = "Yamini208/DOFS_Project_Assignment"
 }
+
+variable "aws_region" {
+  description = "AWS region for CodeBuild"
+  type        = string
+  default     = "us-east-1"
+}
