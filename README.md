@@ -126,3 +126,6 @@ pip install -r requirements.txt -t .
 cd ../fulfill_order
 pip install -r requirements.txt -t .
 cd ../.. # Go back to the dofs-project root
+
+3. GitHub Configuration:
+Ensure your main branch (or master) is protected and that pull requests are used for merging changes. This project assumes your buildspec.yml is at the root of your repository.
