@@ -6,10 +6,6 @@ resource "aws_codebuild_project" "terraform_build" {
   }
 
   environment {
-    compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:5.0"
-    type                        = "LINUX_CONTAINER"
-  environment {
   compute_type                = "BUILD_GENERAL1_SMALL"
   image                       = "aws/codebuild/standard:5.0"
   type                        = "LINUX_CONTAINER"
@@ -19,6 +15,7 @@ resource "aws_codebuild_project" "terraform_build" {
     name  = "AWS_REGION"
     value = var.aws_region
   }
+}
 
   source {
     type            = "GITHUB"
