@@ -78,6 +78,7 @@ Follow these steps to set up and deploy the DOFS project.
 **1. AWS Setup:** This section covers the initial manual setup required before your CI/CD pipeline can take over.
 
 1. Create an S3 Bucket for Terraform State:
+
 This bucket will store your Terraform state files, enabling remote state management and state locking.
 
 * Go to the S3 console in your chosen region (us-east-1 recommended).
@@ -91,6 +92,7 @@ This bucket will store your Terraform state files, enabling remote state managem
 * Create the bucket.
 
 2. Create AWS CodeConnections to GitHub:
+
 This connection allows AWS services (CodePipeline, CodeBuild) to securely access your GitHub repository.
 
 * Go to the AWS CodeConnections console (https://console.aws.amazon.com/codesuite/settings/connections) in us-east-1.
@@ -115,6 +117,7 @@ This connection allows AWS services (CodePipeline, CodeBuild) to securely access
    git clone YOUR_GITHUB_REPO_URL
    cd dofs-project
 2. Prepare Lambda Dependencies:
+
 Navigate into each lambda directory and install its dependencies. Ensure requirements.txt is present in each as per the folder structure.
 ```
 cd lambdas/api_handler
@@ -130,7 +133,12 @@ cd ../.. # Go back to the dofs-project root
 
 3. GitHub Configuration:
    
-Ensure your main branch (or master) is protected and that pull requests are used for merging changes. This project assumes your buildspec.yml is at the root of your repository.
+Ensure your ```main``` branch (or ```master```) is protected and that pull requests are used for merging changes. This project assumes your buildspec.yml is at the root of your repository.
 
 4. Initial CI/CD Deployment:
-   
+
+This step provisions your CodePipeline and CodeBuild project using Terraform.
+
+1. Update Terraform Backend Configuration:
+
+Edit ```terraform/cicd/backend.tf``` and ```terraform/backend.tf``` to point to the S3 bucket you created earlier.
