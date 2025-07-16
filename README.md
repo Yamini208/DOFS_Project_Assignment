@@ -114,3 +114,5 @@ This connection allows AWS services (CodePipeline, CodeBuild) to securely access
    ```
    git clone YOUR_GITHUB_REPO_URL
    cd dofs-project
+2. Prepare Lambda Dependencies:
+Navigate into each lambda directory and install its dependencies. Ensure requirements.txt is present in each as per the folder structure.
