@@ -45,3 +45,26 @@ API Handler (Lambda): A RESTful endpoint exposed via API Gateway that accepts PO
 -- order_dlq: Dead-Letter Queue for messages that fail processing by the Fulfillment Lambda.
 
 * DLQ & Alerting: Unsuccessful messages (after maxReceiveCount retries) from order_queue are routed to order_dlq. A mechanism (e.g., Lambda trigger) reads from order_dlq and writes these failed messages to the failed_orders DynamoDB table.
+
+4. Prerequisites
+Before you begin, ensure you have the following installed and configured:
+
+* AWS Account: An active AWS account with sufficient permissions to create IAM roles, EC2 instances (for CodeBuild environment), S3 buckets, API Gateway, Lambda functions, Step Functions, DynamoDB, and SQS.
+
+* AWS CLI: Configured with credentials for your AWS account and default region (us-east-1 recommended for consistency).
+
+* Install: ```curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && sudo ./aws/install``` (for Linux) or refer to AWS CLI Installation Guide.
+
+Configure: aws configure
+
+Terraform: Version 1.0.0 or higher.
+
+Install: Follow the instructions on the Terraform website.
+
+Git: For cloning the repository and version control.
+
+Install: sudo apt-get install git (Debian/Ubuntu) or refer to Git Installation Guide.
+
+GitHub Repository: Your project code should be hosted in a GitHub repository.
+
+Node.js / npm (Optional, for API testing): If you plan to use tools like curl or Postman, these are not strictly necessary but might be useful for local testing or custom scripts.
