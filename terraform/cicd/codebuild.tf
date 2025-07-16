@@ -9,13 +9,15 @@ resource "aws_codebuild_project" "terraform_build" {
     compute_type                = "BUILD_GENERAL1_SMALL"
     image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
-    environment_variables = [
-      {
-        name  = "AWS_REGION"
-        value = var.aws_region
-      }
-    ]
-    privileged_mode = true
+  environment {
+  compute_type                = "BUILD_GENERAL1_SMALL"
+  image                       = "aws/codebuild/standard:5.0"
+  type                        = "LINUX_CONTAINER"
+  privileged_mode             = true
+
+  environment_variable {
+    name  = "AWS_REGION"
+    value = var.aws_region
   }
 
   source {
