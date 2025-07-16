@@ -1,9 +1,9 @@
-Project Assignment: Distributed Order Fulfillment System (DOFS) with CI/CD Objective
+**Project Assignment: Distributed Order Fulfillment System (DOFS) with CI/CD Objective**
 
-1. Project Overview:
+**1. Project Overview:**
                 The Distributed Order Fulfillment System (DOFS) is designed to handle order processing asynchronously, ensuring high availability, scalability, and resilience using serverless technologies. Orders are ingested via an API, validated, stored, and then processed through a fulfillment workflow. Unsuccessful fulfillment attempts are gracefully handled via a Dead-Letter Queue (DLQ). Infrastructure provisioning and application deployment are fully automated using Terraform and managed through an AWS CodePipeline-driven CI/CD pipeline, targeting a DEV environment.
    
-2. Architecture Overview:
+**2. Architecture Overview:**
 ```
 API Gateway --> Lambda (API Handler)
   |
@@ -19,7 +19,7 @@ Validate Lambda --> DynamoDB (orders) --> SQS --> Fulfillment Lambda
 DynamoDB update + DLQ
 ```
 
-3. Functional Components
+**3. Functional Components**
 API Handler (Lambda): A RESTful endpoint exposed via API Gateway that accepts POST /order requests. It initiates the Step Function execution for order processing.
 
 * Step Function (Orchestrator): A serverless workflow that orchestrates the order processing. It includes:
@@ -46,7 +46,7 @@ API Handler (Lambda): A RESTful endpoint exposed via API Gateway that accepts PO
 
 * DLQ & Alerting: Unsuccessful messages (after maxReceiveCount retries) from order_queue are routed to order_dlq. A mechanism (e.g., Lambda trigger) reads from order_dlq and writes these failed messages to the failed_orders DynamoDB table.
 
-4. Prerequisites
+**4. Prerequisites:**
 Before you begin, ensure you have the following installed and configured:
 
 * AWS Account: An active AWS account with sufficient permissions to create IAM roles, EC2 instances (for CodeBuild environment), S3 buckets, API Gateway, Lambda functions, Step Functions, DynamoDB, and SQS.
