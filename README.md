@@ -205,12 +205,13 @@ git push origin main
 
 **5. Troubleshooting:**
 This section provides common issues and solutions.
-**- Connection not found" in CodePipeline/CodeBuild Source:**
+
+**+ Connection not found" in CodePipeline/CodeBuild Source:**
 1. Issue: The CodePipeline or CodeBuild project is configured with a CodeConnections ARN that doesn't exist or is inaccessible.
 
 2. Solution: Go to AWS CodeConnections console (us-east-1 recommended region), verify the connection exists, note its exact ARN. Then, edit your CodePipeline's Source stage and update the "Connection ARN" field to match the correct ARN. If the connection was accidentally deleted, recreate it and update the pipeline.
 
-**```ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'```  in CodeBuild:**
+**+ ```ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'```  in CodeBuild:**
 1. Issue: The ```pip install -r requirements.txt``` command cannot find the ```requirements.txt file``` at the expected location.
 
 2. Solution: Ensure your ```buildspec.yml``` correctly navigates to the directory containing the ```requirements.txt``` before attempting to install. For multiple ```requirements.txt``` files, use the find and loop approach as described in the ```buildspec.yml``` template.
