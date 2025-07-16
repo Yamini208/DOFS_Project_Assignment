@@ -113,5 +113,5 @@ This connection allows AWS services (CodePipeline, CodeBuild) to securely access
 1. Clone the Repository:
    ```
    git clone YOUR_GITHUB_REPO_URL
-cd dofs-project
+   cd dofs-project
 ```
