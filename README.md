@@ -48,6 +48,7 @@ DynamoDB update + DLQ
 * DLQ & Alerting: Unsuccessful messages (after maxReceiveCount retries) from order_queue are routed to order_dlq. A mechanism (e.g., Lambda trigger) reads from order_dlq and writes these failed messages to the failed_orders DynamoDB table.
 
 **4. Prerequisites:**
+
 Before you begin, ensure you have the following installed and configured:
 
 * AWS Account: An active AWS account with sufficient permissions to create IAM roles, EC2 instances (for CodeBuild environment), S3 buckets, API Gateway, Lambda functions, Step Functions, DynamoDB, and SQS.
@@ -69,3 +70,41 @@ Before you begin, ensure you have the following installed and configured:
 * GitHub Repository: Your project code should be hosted in a GitHub repository.
 
 * Node.js / npm (Optional, for API testing): If you plan to use tools like curl or Postman, these are not strictly necessary but might be useful for local testing or custom scripts.
+
+**5. Setup Instructions:**
+
+Follow these steps to set up and deploy the DOFS project.
+
+* AWS Setup: This section covers the initial manual setup required before your CI/CD pipeline can take over.
+
+* Create an S3 Bucket for Terraform State:
+This bucket will store your Terraform state files, enabling remote state management and state locking.
+
+* Go to the S3 console in your chosen region (us-east-1 recommended).
+
+* Click "Create bucket".
+
+* Give it a unique name (e.g., dofs-terraform-state-YOUR_ACCOUNT_ID).
+
+* Keep default settings, but consider enabling Versioning and Server-Side Encryption for best practices.
+
+Create the bucket.
+
+Create AWS CodeConnections to GitHub:
+This connection allows AWS services (CodePipeline, CodeBuild) to securely access your GitHub repository.
+
+Go to the AWS CodeConnections console (https://console.aws.amazon.com/codesuite/settings/connections) in us-east-1.
+
+Click "Create connection".
+
+Select "GitHub" as the provider.
+
+Provide a descriptive name (e.g., dofs-github-connection).
+
+Click "Connect to GitHub". This will redirect you to GitHub to authorize the AWS Connector for GitHub app.
+
+Follow the GitHub prompts, ensuring you grant access to the repository containing this project.
+
+Once authorized, you'll be redirected back to the AWS console. Finish creating the connection.
+
+Note down the Connection ARN (e.g., arn:aws:codeconnections:us-east-1:YOUR_ACCOUNT_ID:connection/YOUR_CONNECTION_ID). You will need this for the CI/CD Terraform.
