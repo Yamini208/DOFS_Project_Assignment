@@ -129,4 +129,8 @@ cd ../.. # Go back to the dofs-project root
 ```
 
 3. GitHub Configuration:
+   
 Ensure your main branch (or master) is protected and that pull requests are used for merging changes. This project assumes your buildspec.yml is at the root of your repository.
+
+4. Initial CI/CD Deployment:
+   
