@@ -116,3 +116,13 @@ This connection allows AWS services (CodePipeline, CodeBuild) to securely access
    cd dofs-project
 2. Prepare Lambda Dependencies:
 Navigate into each lambda directory and install its dependencies. Ensure requirements.txt is present in each as per the folder structure.
+```
+cd lambdas/api_handler
+pip install -r requirements.txt -t . # Use -t . to install into the current directory for zipping
+cd ../validator
+pip install -r requirements.txt -t .
+cd ../order_storage
+pip install -r requirements.txt -t .
+cd ../fulfill_order
+pip install -r requirements.txt -t .
+cd ../.. # Go back to the dofs-project root
