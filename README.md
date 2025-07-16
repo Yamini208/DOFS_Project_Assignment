@@ -34,14 +34,14 @@ API Handler (Lambda): A RESTful endpoint exposed via API Gateway that accepts PO
 
 * DynamoDB Tables:
 
-orders: Stores all order details with order_id as the primary key.
+- orders: Stores all order details with order_id as the primary key.
 
-failed_orders: Stores messages from the DLQ for auditing and further analysis.
+- failed_orders: Stores messages from the DLQ for auditing and further analysis.
 
 * SQS Queues:
 
-order_queue: Standard SQS queue for order fulfillment messages.
+- order_queue: Standard SQS queue for order fulfillment messages.
 
-order_dlq: Dead-Letter Queue for messages that fail processing by the Fulfillment Lambda.
+- order_dlq: Dead-Letter Queue for messages that fail processing by the Fulfillment Lambda.
 
 * DLQ & Alerting: Unsuccessful messages (after maxReceiveCount retries) from order_queue are routed to order_dlq. A mechanism (e.g., Lambda trigger) reads from order_dlq and writes these failed messages to the failed_orders DynamoDB table.
