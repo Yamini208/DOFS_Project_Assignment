@@ -3,41 +3,44 @@ import os
 import random
 import boto3
 
-# Initialize DynamoDB client
+# Initialize DynamoDB resource
 dynamodb = boto3.resource('dynamodb')
 
-# Get table names from environment variables
-orders_table_name = os.environ['ORDER_TABLE']           # orders table
-failed_table_name = os.environ['FAILED_ORDER_TABLE']    # failed_orders table
+# Get environment variables for tables
+order_table_name = os.environ['ORDER_TABLE']
+failed_order_table_name = os.environ['FAILED_ORDER_TABLE']
 
-orders_table = dynamodb.Table(orders_table_name)
-failed_table = dynamodb.Table(failed_table_name)
+order_table = dynamodb.Table(order_table_name)
+failed_order_table = dynamodb.Table(failed_order_table_name)
 
 def lambda_handler(event, context):
     print("✅ Fulfill Order Lambda triggered")
     print(f"📦 Raw event: {json.dumps(event)}")
 
-    for record in event.get('Records', []):
-        try:
-            order = json.loads(record['body'])
-            print(f"🛒 Order received: {order}")
+    try:
+        # If Step Functions sends payload directly
+        order = event
 
-            # Simulate 70% success rate or force failure manually
-            if order.get("force_fail") or random.random() >= 0.7:
-                print("❌ Simulated failure, writing to failed_orders table")
-                
-                # Write failed order to failed_orders table
-                failed_table.put_item(Item=order)
-                raise Exception("Simulated processing failure")
+        print(f"🛒 Order received: {order}")
 
-            # Fulfillment successful, update status
-            order["status"] = "FULFILLED"
-            response = orders_table.put_item(Item=order)
-            print(f"✅ Order fulfilled and written to orders table: {response}")
+        # Simulate fulfillment failure
+        if order.get("force_fail") or random.random() >= 0.7:
+            print("❌ Simulated failure")
+            # Set the order_status to FAILED
+            order["order_status"] = "FAILED"
+            # Write the failed order to failed_orders table
+            failed_order_table.put_item(Item=order)
+            print(f"⚠️ Order written to {failed_order_table_name}")
+            raise Exception("Simulated processing failure")
 
-        except Exception as e:
-            print(f"❗ Error processing order: {str(e)}")
-            raise e  # Allow Lambda retry & DLQ redirection
+        # If success, update status and write to orders table
+        order["order_status"] = "FULFILLED"
+        response = order_table.put_item(Item=order)
+        print(f"✅ Order fulfilled and written to {order_table_name}: {response}")
+
+    except Exception as e:
+        print(f"❗ Error processing order: {str(e)}")
+        raise e  # Let Step Functions catch the error and apply retries or catch
 
     return {
         "statusCode": 200,
