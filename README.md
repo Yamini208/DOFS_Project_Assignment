@@ -139,6 +139,6 @@ Ensure your ```main``` branch (or ```master```) is protected and that pull reque
 
 This step provisions your CodePipeline and CodeBuild project using Terraform.
 
-1. Update Terraform Backend Configuration:
+* Update Terraform Backend Configuration:
 
 Edit ```terraform/cicd/backend.tf``` and ```terraform/backend.tf``` to point to the S3 bucket you created earlier.
