@@ -75,9 +75,9 @@ Before you begin, ensure you have the following installed and configured:
 
 Follow these steps to set up and deploy the DOFS project.
 
-1. AWS Setup: This section covers the initial manual setup required before your CI/CD pipeline can take over.
+**1. AWS Setup:** This section covers the initial manual setup required before your CI/CD pipeline can take over.
 
-* Create an S3 Bucket for Terraform State:
+1. Create an S3 Bucket for Terraform State:
 This bucket will store your Terraform state files, enabling remote state management and state locking.
 
 * Go to the S3 console in your chosen region (us-east-1 recommended).
