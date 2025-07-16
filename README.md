@@ -55,16 +55,16 @@ Before you begin, ensure you have the following installed and configured:
 
 * Install: ```curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && sudo ./aws/install``` (for Linux) or refer to AWS CLI Installation Guide.
 
-Configure: aws configure
+* Configure: aws configure
 
-Terraform: Version 1.0.0 or higher.
+* Terraform: Version 1.0.0 or higher.
 
-Install: Follow the instructions on the Terraform website.
+* Install: Follow the instructions on the Terraform website.
 
-Git: For cloning the repository and version control.
+* Git: For cloning the repository and version control.
 
-Install: sudo apt-get install git (Debian/Ubuntu) or refer to Git Installation Guide.
+* Install: ```sudo apt-get install git``` (Debian/Ubuntu) or refer to Git Installation Guide.
 
-GitHub Repository: Your project code should be hosted in a GitHub repository.
+* GitHub Repository: Your project code should be hosted in a GitHub repository.
 
-Node.js / npm (Optional, for API testing): If you plan to use tools like curl or Postman, these are not strictly necessary but might be useful for local testing or custom scripts.
+* Node.js / npm (Optional, for API testing): If you plan to use tools like curl or Postman, these are not strictly necessary but might be useful for local testing or custom scripts.
