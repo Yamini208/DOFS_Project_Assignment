@@ -211,7 +211,25 @@ This section provides common issues and solutions.
 
 2. Solution: Go to AWS CodeConnections console (us-east-1 recommended region), verify the connection exists, note its exact ARN. Then, edit your CodePipeline's Source stage and update the "Connection ARN" field to match the correct ARN. If the connection was accidentally deleted, recreate it and update the pipeline.
 
-**+ ```ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'```  in CodeBuild:**
++ ```ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'``` **in CodeBuild:**
 1. Issue: The ```pip install -r requirements.txt``` command cannot find the ```requirements.txt file``` at the expected location.
 
 2. Solution: Ensure your ```buildspec.yml``` correctly navigates to the directory containing the ```requirements.txt``` before attempting to install. For multiple ```requirements.txt``` files, use the find and loop approach as described in the ```buildspec.yml``` template.
+
++ **Terraform errors during ```terraform apply```:**
+1. Issue: IAM permissions, resource limits, syntax errors in .tf files, or conflicts with existing AWS resources.
+
+2. Solution: Carefully read the Terraform error message; it usually points to the exact problem.
+
+* IAM: Ensure the IAM role used by CodeBuild for Terraform operations has permissions for all AWS resources it's trying to create/modify (e.g., lambda:*, apigateway:*, dynamodb:*, sqs:*, states:*).
+
+* Syntax: Run terraform validate locally to catch syntax errors.
+
+* Resource Limits: Check AWS Service Quotas if you suspect hitting limits.
+
+* State Locking: Ensure your S3 backend configuration includes dynamodb_table for state locking to prevent concurrent apply issues.
+
++ **Lambda function not found / CodeDeploy errors:**
+1. Issue: Often means the Lambda deployment package wasn't correctly created or uploaded by Terraform, or the Lambda resource in Terraform is misconfigured.
+
+2. Solution: Check CodeBuild logs for errors during the terraform apply phase. Ensure the Lambda zip files are correctly packaged and referenced in your Terraform aws_lambda_function resources.
