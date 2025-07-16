@@ -5,7 +5,7 @@ Project Assignment: Distributed Order Fulfillment System (DOFS) with CI/CD Objec
    
 2. Architecture Overview:
 
-API Gateway --> Lambda (API Handler)
+```API Gateway --> Lambda (API Handler)
   |
   v
 Step Function Orchestrator
@@ -16,4 +16,4 @@ Step Function Orchestrator
 Validate Lambda --> DynamoDB (orders) --> SQS --> Fulfillment Lambda
   |
   v
-DynamoDB update + DLQ
+DynamoDB update + DLQ```
